@@ -5,7 +5,6 @@ plugins {
 }
 
 android {
-    namespace 'com.demo.vpn'
     compileSdk 32
 
     defaultConfig {
