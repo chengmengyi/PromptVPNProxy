@@ -138,6 +138,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="205dp"
+        android:layout_margin="14dp"
+        layout="@layout/layout_home_native_ad"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <View
         android:id="@+id/guide_view"
         android:layout_width="match_parent"

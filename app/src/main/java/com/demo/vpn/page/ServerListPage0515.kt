@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.demo.vpn.R
+import com.demo.vpn.ad.LoadAd0515Util
+import com.demo.vpn.ad.Show0515FullAd
 import com.demo.vpn.adapter.ServerListAdapter
 import com.demo.vpn.base_page.BasePage0515
 import com.demo.vpn.bean.Server0515Bean
@@ -11,10 +13,13 @@ import com.demo.vpn.server.Connect0515Util
 import kotlinx.android.synthetic.main.activity_server_list.*
 
 class ServerListPage0515:BasePage0515() {
+    private val showBackAd = Show0515FullAd(LoadAd0515Util.BACK,this)
+
     override fun layout(): Int = R.layout.activity_server_list
 
     override fun initView() {
         immersionBar.statusBarView(view_top).init()
+        LoadAd0515Util.load(LoadAd0515Util.BACK)
         rv_server.apply {
             layoutManager=LinearLayoutManager(this@ServerListPage0515)
             adapter=ServerListAdapter(this@ServerListPage0515){ clickItem(it) }
@@ -53,6 +58,12 @@ class ServerListPage0515:BasePage0515() {
     }
 
     override fun onBackPressed() {
-        finish()
+        showBackAd.show0515(
+            noAdBack = true,
+            showingAd = {},
+            closeAd = {
+                finish()
+            }
+        )
     }
 }

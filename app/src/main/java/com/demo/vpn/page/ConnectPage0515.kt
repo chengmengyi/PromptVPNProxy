@@ -2,19 +2,23 @@ package com.demo.vpn.page
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.VpnService
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.ViewCompat.getTranslationX
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.demo.vpn.R
+import com.demo.vpn.ad.LoadAd0515Util
+import com.demo.vpn.ad.Show0515FullAd
+import com.demo.vpn.ad.Show0515NativeAd
 import com.demo.vpn.base_page.BasePage0515
+import com.demo.vpn.conf.Fire0515
+import com.demo.vpn.interfaces.IAppToBackgroundInterface
 import com.demo.vpn.interfaces.IConnectTimeInterface
 import com.demo.vpn.interfaces.IServerStateListener
 import com.demo.vpn.server.Connect0515Util
@@ -23,13 +27,14 @@ import com.demo.vpn.server.Connect0515Util.currentServer
 import com.demo.vpn.server.ConnectTime0515Util
 import com.demo.vpn.server.Server0515Util
 import com.demo.vpn.util.*
+import com.github.shadowsocks.bg.BaseService
 import com.github.shadowsocks.utils.StartService
 import kotlinx.android.synthetic.main.activity_connect.*
 import kotlinx.android.synthetic.main.connect_drawer.*
 import kotlinx.android.synthetic.main.connect_home.*
 import kotlinx.coroutines.*
 
-class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterface {
+class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterface, IAppToBackgroundInterface {
     private var jobTime=-1
     private var canClick=true
     private var permission=false
@@ -40,10 +45,14 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
     private var connectingAnimator:ObjectAnimator?=null
     private val instance=SizeUtils.dp2px(55F)
 
+    private val showHomeAd = Show0515NativeAd(LoadAd0515Util.HOME,this)
+    private val showConnectAd = Show0515FullAd(LoadAd0515Util.CONNECT,this)
+
     private val registerResult=registerForActivityResult(StartService()) {
         if (!it && permission) {
             permission = false
-            startConnect()
+            Point0515Util.setPoint("prompt_vg")
+            checkHasServerBean()
         } else {
             canClick=true
         }
@@ -53,12 +62,27 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
 
     override fun initView() {
         immersionBar.statusBarView(view_top).init()
+        setServerInfo()
         ConnectTime0515Util.setConnectTimeInterface(this)
         Connect0515Util.init(this,this)
+        AppRegister.setIAppToBackgroundInterface(this)
 
         setClickListener()
         if(AppRegister.isHotLoad){
             hideGuide()
+        }
+        checkAutoConnect(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { checkAutoConnect(it) }
+    }
+
+    private fun checkAutoConnect(intent: Intent){
+        if(intent.getBooleanExtra("autoConnect",false)){
+            autoConnect=true
+            clickConnectBtn()
         }
     }
 
@@ -66,6 +90,9 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
         llc_choose_server.setOnClickListener {
             if(canClick&&!drawer_layout.isOpen){
                 startActivityForResult(Intent(this,ServerListPage0515::class.java),515)
+            }
+            if (!connect&&Connect0515Util.isConnected()){
+                appToBackground()
             }
         }
 
@@ -89,17 +116,26 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
             }
         }
         iv_drawer.setOnClickListener {
-            if(!drawer_layout.isOpen){
+            if(!drawer_layout.isOpen&&canClick){
                 drawer_layout.openDrawer(Gravity.LEFT)
+            }
+            if (!connect&&Connect0515Util.isConnected()){
+                appToBackground()
             }
         }
         guide_view.setOnClickListener {  }
         guide_lottie_view.setOnClickListener { clickConnectBtn() }
+        iv_center.setOnClickListener {
+            if(Connect0515Util.isDisconnected()){
+                clickConnectBtn()
+            }
+        }
     }
 
     private fun clickConnectBtn(){
-        if(LimitUtil.limitArea){
+        if(Limit0515Util.limitArea){
             AlertDialog.Builder(this).apply {
+                setCancelable(false)
                 setMessage("Due to the policy reason , this service is not available in your country")
                 setPositiveButton("confirm") { _, _ -> finish() }
                 show()
@@ -112,10 +148,14 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
         hideGuide()
         canClick=false
         if(Connect0515Util.isConnected()){
+            LoadAd0515Util.disconnectVpnClearAllAd()
             setConnectingView(false)
             startConnectJob(false)
             startConnectAnimator()
         }else{
+            if(!autoConnect){
+                Point0515Util.setPoint("prompt_vclick")
+            }
             setServerInfo()
             if (getNetStatus()==1){
                 AlertDialog.Builder(this).apply {
@@ -132,11 +172,26 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
                 return
             }
 
+            checkHasServerBean()
+        }
+    }
+
+    private fun checkHasServerBean(){
+        if(currentServer.isFast()){
+            Server0515Util.checkSmartSererListEmpty(supportFragmentManager){
+                if(it){
+                    canClick=true
+                }else{
+                    startConnect()
+                }
+            }
+        }else{
             startConnect()
         }
     }
 
     private fun startConnect(){
+        Point0515Util.setPoint("prompt_vc")
         setConnectingView(true)
         ConnectTime0515Util.resetTime()
         startConnectJob(true)
@@ -153,7 +208,7 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
                 }
                 delay(1000)
                 jobTime++
-                if (jobTime==1){
+                if (jobTime==3){
                     if (connect){
                         Connect0515Util.connect(autoConnect)
                         autoConnect=false
@@ -164,8 +219,20 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
 
                 if (jobTime in 3..9){
                     if (connectServerSuccess(connect)){
-                        cancel()
-                        connectComplete()
+                        if(null!=LoadAd0515Util.getAdByType(LoadAd0515Util.CONNECT)){
+                            cancel()
+                            showConnectAd.show0515(
+                                showingAd = {
+                                    connectComplete(false)
+                                },
+                                closeAd = { connectComplete() }
+                            )
+                        }else{
+                            if(!Fire0515.canShowInterAd()||LoadAd0515Util.adNumLimit()){
+                                cancel()
+                                connectComplete()
+                            }
+                        }
                     }
                 }else if (jobTime >= 10) {
                     cancel()
@@ -182,12 +249,10 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
             if (connectServerSuccess(connect)){
                 if (connect){
                     setConnectedView()
+                    ConnectTime0515Util.startTime()
                 }else{
                     setStoppedView()
                     setServerInfo()
-                }
-                if(toResult&&connect){
-                    ConnectTime0515Util.startTime()
                 }
                 if (toResult&&AppRegister.front&& ActivityUtils.getTopActivity().javaClass.name==ConnectPage0515::class.java.name){
                     startActivity(Intent(this,ResultPage::class.java).apply {
@@ -196,6 +261,9 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
                 }
             }else{
                 setStoppedView()
+                if(connect){
+                    Point0515Util.setPoint("prompt_vf")
+                }
                 showToast(if (connect) "Connect Fail" else "Disconnect Fail")
             }
             canClick=true
@@ -289,6 +357,7 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
 
     override fun onServiceConnected() {
         setConnectedView()
+        llc_connect.translationX=getTranslationX(0)
     }
 
     override fun disConnectSuccess() {
@@ -302,15 +371,45 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
         guide_lottie_view.showView(false)
     }
 
+
+    override fun appToBackground() {
+        if(jobTime in 0..2){
+            jobTime=-1
+            canClick=true
+            stopConnectAnimator()
+            stopConnectJob()
+            stopConnectingAnimator()
+            if(connect){
+                Connect0515Util.appToBackgroundSetState(BaseService.State.Stopped)
+                setStoppedView()
+                llc_connect.translationX=getTranslationX(100)
+            }else{
+                Connect0515Util.appToBackgroundSetState(BaseService.State.Connected)
+                setConnectedView()
+                llc_connect.translationX=getTranslationX(0)
+            }
+        }
+    }
+
     override fun onBackPressed() {
         if (guideShowing()){
             hideGuide()
             return
         }
-        finish()
+        if(canClick){
+            finish()
+        }
+        if (!connect&&Connect0515Util.isConnected()){
+            appToBackground()
+        }
     }
 
     private fun guideShowing()=guide_lottie_view.visibility==View.VISIBLE
+
+    override fun onResume() {
+        super.onResume()
+        showHomeAd.show()
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -320,6 +419,9 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
         Connect0515Util.onDestroy()
         ConnectTime0515Util.setConnectTimeInterface(this)
         AppRegister.isHotLoad=true
+        showHomeAd.endCheck()
+        AppRegister.setIAppToBackgroundInterface(null)
+        Limit0515Util.setRefreshBool(LoadAd0515Util.HOME,true)
     }
 
     override fun connectTimeCallback(time: Long) {

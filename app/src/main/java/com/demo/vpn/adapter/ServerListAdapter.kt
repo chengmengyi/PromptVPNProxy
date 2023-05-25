@@ -17,7 +17,12 @@ class ServerListAdapter(
     private val context: Context,
     private val clickCallback:(bean:Server0515Bean)->Unit
 ):Adapter<ServerListAdapter.ServerView>() {
-    private val list=Server0515Util.getAllServerList()
+    private val list= arrayListOf<Server0515Bean>()
+
+    init {
+        list.add(Server0515Bean())
+        list.addAll(Server0515Util.allServerList)
+    }
 
     inner class ServerView(view:View):ViewHolder(view){
         init {

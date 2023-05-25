@@ -1,6 +1,7 @@
 package com.demo.vpn.server
 
 import com.demo.vpn.interfaces.IConnectTimeInterface
+import com.demo.vpn.util.HttpUtil
 import kotlinx.coroutines.*
 
 object ConnectTime0515Util {
@@ -18,6 +19,9 @@ object ConnectTime0515Util {
             while (null!=timeJob) {
                 iConnectTimeInterface?.connectTimeCallback(connectTime)
                 connectTime++
+                if(connectTime%60==0L){
+                    HttpUtil.serverHeartUpload(true)
+                }
                 delay(1000L)
             }
         }
@@ -31,4 +35,6 @@ object ConnectTime0515Util {
     fun resetTime(){
         connectTime=0L
     }
+
+    fun getAllTime()=connectTime
 }
