@@ -6,20 +6,20 @@ object Local0515 {
 
     val localServerList= arrayListOf(
         Server0515Bean(
-            ip = "100.223.52.78",
-            port = 100,
-            pwd = "123456",
+            ip = "69.50.92.37",
+            port = 1740,
+            pwd = "oA8bw0qkNaiSR5eO",
             account = "chacha20-ietf-poly1305",
-            country = "Japan",
-            city = "LocalTokyo",
+            country = "United States",
+            city = "denver",
         ),
         Server0515Bean(
-            ip = "100.223.52.77",
-            port = 100,
-            pwd = "123456",
+            ip = "162.251.61.100",
+            port = 1740,
+            pwd = "oA8bw0qkNaiSR5eO",
             account = "chacha20-ietf-poly1305",
-            country = "UnitedStates",
-            city = "LocalNewYork",
+            country = "United States",
+            city = "chicago",
         ),
     )
 

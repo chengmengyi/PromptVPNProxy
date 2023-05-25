@@ -12,7 +12,7 @@ class AgreePage:BasePage0515() {
         iv_back.setOnClickListener { finish() }
         web.apply {
             settings.javaScriptEnabled=true
-            loadUrl("")
+            loadUrl("https://sites.google.com/view/prompt-vpn/%E9%A6%96%E9%A0%81")
         }
     }
 }

@@ -2,18 +2,19 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
-    namespace 'com.demo.vpn'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.demo.vpn"
+        applicationId "com.secure.prompt"
         minSdk 24
         targetSdk 32
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,4 +52,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:29.3.1"))
 //    implementation("com.google.android.gms:play-services-ads:21.1.0")
     implementation "com.android.installreferrer:installreferrer:2.2"
+
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+//固定版本，新版本收不到安装回传
+    implementation 'com.facebook.android:facebook-android-sdk:12.3.0'
 }

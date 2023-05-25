@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Prompt VPN Proxy</string>
+    <string name="facebook_app_id" translatable="false">202652032586835</string>
 </resources>

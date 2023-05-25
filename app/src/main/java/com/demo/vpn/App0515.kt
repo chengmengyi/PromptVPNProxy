@@ -8,6 +8,8 @@ import com.demo.vpn.util.HttpUtil
 import com.demo.vpn.util.LimitUtil
 import com.demo.vpn.util.processName
 import com.github.shadowsocks.Core
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
 
 lateinit var app0515: App0515
 class App0515:Application() {
@@ -18,6 +20,7 @@ class App0515:Application() {
         if (!packageName.equals(processName(this))){
             return
         }
+        Firebase.initialize(this)
         AppRegister.register(this)
         LimitUtil.checkLimitUser()
         Fire0515.getFireConf()
