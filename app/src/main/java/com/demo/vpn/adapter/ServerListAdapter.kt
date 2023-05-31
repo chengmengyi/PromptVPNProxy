@@ -41,7 +41,11 @@ class ServerListAdapter(
     override fun onBindViewHolder(holder: ServerView, position: Int) {
         with(holder.itemView){
             val server0515Bean = list[position]
-            tv_name.text=server0515Bean.country
+            tv_name.text=if (server0515Bean.isFast()){
+                server0515Bean.country
+            }else{
+                "${server0515Bean.country} - ${server0515Bean.city}"
+            }
             iv_logo.setImageResource(get0515ServerLogo(server0515Bean.country))
 
             val select = server0515Bean.ip == Connect0515Util.currentServer.ip

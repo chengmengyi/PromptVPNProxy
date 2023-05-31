@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Prompt VPN Proxy</string>
-    <string name="admob_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_id">ca-app-pub-2618006020231520~2879118973</string>
+    <string name="facebook_app_id" translatable="false">568652692081469</string>
 </resources>

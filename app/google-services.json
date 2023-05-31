@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "924618699565",
+    "project_id": "prompt-8fa6c",
+    "storage_bucket": "prompt-8fa6c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924618699565:android:3154706ac933356e8f99a4",
+        "android_client_info": {
+          "package_name": "com.secure.prompt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "924618699565-30raibeni0fitek2v9f29pegdu4hn6o9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBafCzkrVmzpRalJI_NQ66RXl-JssLhhY4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "924618699565-30raibeni0fitek2v9f29pegdu4hn6o9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

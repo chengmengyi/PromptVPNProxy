@@ -25,32 +25,20 @@ object Local0515 {
 
 
     const val localAd234="""{
-    "prompt_show":5,
-    "prompt_click":30,
+    "prompt_show":30,
+    "prompt_click":5,
     "prompt_open":[
         {
             "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/3419835294x",
+            "prompt_id":"ca-app-pub-2618006020231520/2088781481",
             "prompt_format":"open",
             "prompt_ppro":2
-        },
-        {
-            "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/3419835294x",
-            "prompt_format":"open",
-            "prompt_ppro":3
-        },
-       {
-            "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/3419835294",
-            "prompt_format":"open",
-            "prompt_ppro":1
         }
     ],
     "prompt_cil":[
         {
             "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/2247696110",
+            "prompt_id":"ca-app-pub-2618006020231520/9341457682",
             "prompt_format":"native",
             "prompt_ppro":2
         }
@@ -58,7 +46,7 @@ object Local0515 {
     "prompt_but":[
         {
             "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/2247696110",
+            "prompt_id":"ca-app-pub-2618006020231520/9775699815",
             "prompt_format":"native",
             "prompt_ppro":3
         }
@@ -66,7 +54,7 @@ object Local0515 {
     "prompt_intal":[
         {
             "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/1033173712",
+            "prompt_id":"ca-app-pub-2618006020231520/9439344811",
             "prompt_format":"interstitial",
             "prompt_ppro":2
         }
@@ -74,10 +62,11 @@ object Local0515 {
     "prompt_goback":[
         {
             "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/1033173712",
+            "prompt_id":"ca-app-pub-2618006020231520/2962879450",
             "prompt_format":"interstitial",
             "prompt_ppro":1
         }
     ]
-}"""
+}
+"""
 }

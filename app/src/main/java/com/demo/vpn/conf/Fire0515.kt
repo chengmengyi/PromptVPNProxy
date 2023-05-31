@@ -14,13 +14,13 @@ object Fire0515 {
     var firebaseSuccess=false
     var planTwo=false
 
-    private var prompt_s="2"
+    private var prompt_s="1"
     private var prompt_r="50"
-    private var prompt_f="3"
+    private var prompt_f="2"
 
     fun getFireConf(){
         readReferrer()
-        writeServer(Local0515.localServerList)
+//        writeServer(Local0515.localServerList)
 
         if (!BuildConfig.DEBUG){
             val remoteConfig = Firebase.remoteConfig
