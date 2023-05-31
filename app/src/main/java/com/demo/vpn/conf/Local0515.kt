@@ -30,21 +30,9 @@ object Local0515 {
     "prompt_open":[
         {
             "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/3419835294x",
+            "prompt_id":"ca-app-pub-3940256099942544/341983529",
             "prompt_format":"open",
             "prompt_ppro":2
-        },
-        {
-            "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/3419835294x",
-            "prompt_format":"open",
-            "prompt_ppro":3
-        },
-       {
-            "prompt_source":"admob",
-            "prompt_id":"ca-app-pub-3940256099942544/3419835294",
-            "prompt_format":"open",
-            "prompt_ppro":1
         }
     ],
     "prompt_cil":[

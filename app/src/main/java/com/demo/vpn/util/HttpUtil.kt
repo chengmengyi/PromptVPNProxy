@@ -81,6 +81,7 @@ object HttpUtil {
             OkGo.get<String>("$SERVER/swi/cmdk/")
                 .headers("AISN", getOsCountry())
                 .headers("SNM", app0515.packageName)
+//                .headers("SNM", "com.secure.prompt")
                 .headers("SKW", getAndroidId(app0515))
                 .execute(object : StringCallback(){
                     override fun onSuccess(response: Response<String>?) {

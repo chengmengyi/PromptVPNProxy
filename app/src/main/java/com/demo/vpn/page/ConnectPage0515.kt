@@ -336,7 +336,11 @@ class ConnectPage0515:BasePage0515(), IServerStateListener, IConnectTimeInterfac
     }
 
     private fun setServerInfo(){
-        tv_name.text=currentServer.country
+        tv_name.text=if (currentServer.isFast()){
+            currentServer.country
+        }else{
+            "${currentServer.country} - ${currentServer.city}"
+        }
         iv_logo.setImageResource(get0515ServerLogo(currentServer.country))
     }
 

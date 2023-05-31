@@ -84,6 +84,7 @@ object Fire0515 {
     }
 
     fun canShowInterAd():Boolean{
+        return false
         //1表示全部展示插屏，2表示买量展示插屏，3表示fb买量展示插屏，4表示不展示插屏；
         return when(prompt_f){
             "1"-> true

@@ -43,7 +43,9 @@ object AppRegister {
                 front=true
                 if (hotReload){
                     isHotLoad=true
-                    activity.startActivity(Intent(activity, MainPage0515::class.java))
+                    if(ActivityUtils.isActivityExistsInStack(ConnectPage0515::class.java)){
+                        activity.startActivity(Intent(activity, MainPage0515::class.java))
+                    }
                 }
                 hotReload=false
             }
