@@ -115,7 +115,7 @@ fun AppCompatActivity.metrics(){
     metrics.densityDpi = dpi
 }
 
-fun String.buyUser()=contains("fb4a")|| contains("gclid")|| contains("not%20set")|| contains("youtubeads")|| contains("%7B%22")
+fun String.buyUser()= contains("fb4a")|| contains("gclid")|| contains("not%20set")|| contains("youtubeads")|| contains("%7B%22")
 
 fun String.isFB()=contains("fb4a")|| contains("facebook")
 

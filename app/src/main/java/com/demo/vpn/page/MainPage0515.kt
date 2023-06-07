@@ -71,26 +71,14 @@ class MainPage0515 : BasePage0515() {
                             progress_view.progress = 100
                         },
                         closeAd = {
-                            checkPlan()
+                            toConnectPage()
                         }
                     )
                 }else if (pro>=10){
-                    checkPlan()
+                    toConnectPage()
                 }
             }
             start()
-        }
-    }
-
-    private fun checkPlan(){
-        if(Fire0515.isFB()||Fire0515.isBuyUser()){
-            Fire0515.randomPlan()
-            if(Fire0515.planTwo){
-                Point0515Util.setPoint("prompt_testb")
-            }
-            toConnectPage(autoConnect = Fire0515.planTwo&& !Connect0515Util.isConnected())
-        }else{
-            toConnectPage()
         }
     }
 
