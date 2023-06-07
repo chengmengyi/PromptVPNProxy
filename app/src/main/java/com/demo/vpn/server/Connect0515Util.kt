@@ -82,9 +82,6 @@ object Connect0515Util : ShadowsocksConnection.Callback {
             lastServer= currentServer
             HttpUtil.serverHeartUpload(true)
             Point0515Util.setPoint("prompt_vs")
-            if (autoConnect&&Fire0515.planTwo){
-                LoadAd0515Util.planTwoClearAllAd()
-            }
         }
         if (isDisconnected()){
             HttpUtil.serverHeartUpload(false)

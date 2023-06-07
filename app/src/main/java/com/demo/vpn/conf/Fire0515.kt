@@ -12,10 +12,6 @@ import kotlin.collections.ArrayList
 
 object Fire0515 {
     var firebaseSuccess=false
-    var planTwo=false
-
-    private var prompt_s="1"
-    private var prompt_r="50"
     private var prompt_f="2"
 
     fun getFireConf(){
@@ -37,8 +33,6 @@ object Fire0515 {
     private fun parsePromptConfig(string: String){
         runCatching {
             val jsonObject = JSONObject(string)
-            prompt_s=jsonObject.optString("prompt_s")
-            prompt_r=jsonObject.optString("prompt_r")
             prompt_f=jsonObject.optString("prompt_f")
         }
     }
@@ -72,15 +66,6 @@ object Fire0515 {
             return true
         }
         return readReferrerLocal().isFB()
-    }
-
-
-    fun randomPlan(){
-        planTwo=false
-        if((!AppRegister.isHotLoad&&prompt_s=="1")||prompt_s=="2"){
-            val nextInt = Random().nextInt(100)
-            planTwo = str2Int(prompt_r)>=nextInt
-        }
     }
 
     fun canShowInterAd():Boolean{
